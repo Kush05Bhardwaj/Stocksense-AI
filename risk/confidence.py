@@ -34,6 +34,23 @@ def confidence_interval(predicted_price, rmse):
     upper_bound = predicted_price + rmse
     return (lower_bound, upper_bound)
 
+def risk_level(volatility):
+    """
+    Determine risk level based on stock volatility.
+    
+    Args:
+        volatility (float): Volatility measure of the stock
+    
+    Returns:
+        str: Risk level description
+    """
+    if volatility < 10:
+        return "Low Risk"
+    elif volatility < 25:
+        return "Medium Risk"
+    else:
+        return "High Risk"
+
 if __name__ == "__main__":
     # Example usage
     sentiment_data = 0.5  # Replace with actual sentiment value
