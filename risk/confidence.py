@@ -19,6 +19,20 @@ def calculate_confidence(sentiment_data):
     
     return confidence
 
+def confidence_interval(predicted_price, rmse):
+    """
+    Calculate confidence interval for predicted stock price.
+    
+    Args:
+        predicted_price (float): The predicted stock price
+        rmse (float): Root Mean Squared Error of the model
+
+    Returns:
+        tuple: Lower and upper bounds of the confidence interval
+    """
+    lower_bound = predicted_price - rmse
+    upper_bound = predicted_price + rmse
+    return (lower_bound, upper_bound)
 
 if __name__ == "__main__":
     # Example usage
