@@ -54,4 +54,15 @@ class Portfolio:
             pl += (market_price - info["avg_price"]) * info["qty"]
         return round(pl, 2)
     
-    
+    def ai_decision(self, symbol, predicted_price, current_price, threshold=0.05):
+        price_diff = predicted_price - current_price
+        price_change_pct = price_diff / current_price
+
+        if price_change_pct >= threshold:
+            return "buy"
+        elif price_change_pct <= -threshold:
+            return "sell"
+        else:
+            return "hold"
+        
+        
