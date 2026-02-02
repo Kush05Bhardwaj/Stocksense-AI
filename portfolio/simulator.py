@@ -65,4 +65,27 @@ class Portfolio:
         else:
             return "hold"
         
-        
+# Example usage:
+if __name__ == "__main__":
+    portfolio = Portfolio()
+    current_prices = {"AAPL": 150, "GOOGL": 2800}
+    predicted_prices = {"AAPL": 165, "GOOGL": 2600}
+    risk_threshold = 0.05
+
+    decision = portfolio.ai_decision(
+        "AAPL", 
+        predicted_prices["AAPL"], 
+        current_prices["AAPL"], 
+        risk_threshold
+    )
+
+    print(f"AI Decision for AAPL: {decision}")
+    if decision == "buy":
+        print(portfolio.buy("AAPL", current_prices["AAPL"], 10))
+    elif decision == "sell":
+        print(portfolio.sell("AAPL", current_prices["AAPL"], 10))
+    else:
+        print("Holding position.")
+
+    print(f"Portfolio Value: ${portfolio.get_portfolio_value(current_prices)}")
+    print(f"Profit/Loss: ${portfolio.profit_loss(current_prices)}")
