@@ -37,5 +37,21 @@ class Portfolio:
 
         if self.holdings[symbol]["qty"] == 0:
             del self.holdings[symbol]
-            
+
         return f"Sold {quantity} shares of {symbol} at ${price} each."
+    
+    def get_portfolio_value(self, current_prices):
+        value = self.cash
+        for symbol, info in self.holdings.items():
+            if symbol in current_prices:
+                value += info["qty"] * current_prices[symbol]
+        return round(value, 2)
+    
+    def profit_loss(self, current_prices):
+        pl = 0
+        for symbol, info in self.holdings.items():
+            market_price = current_prices.get(symbol, 0)
+            pl += (market_price - info["avg_price"]) * info["qty"]
+        return round(pl, 2)
+    
+    
