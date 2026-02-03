@@ -12,16 +12,33 @@ symbol = input("Enter stock symbol: ")
 # Download stock data
 data = yf.download(symbol, start='2020-01-01', end='2026-02-03')
 
-# Save raw data
+# Save raw data with proper handling
 data.to_csv('data/raw/raw_data.csv')
 
 # Reset index to make Date a column
-data.reset_index(inplace=True)
+data = data.reset_index()
 
-# Select and rename columns
-processed_data = data[['Date', 'Open', 'High', 'Low', 'Close', 'Volume']].copy()
+# Flatten column names if multi-level (remove ticker symbol level)
+if isinstance(data.columns, pd.MultiIndex):
+    data.columns = data.columns.get_level_values(0)
 
-# Save processed data WITHOUT the ticker symbol rows
+# Ensure column names are strings and clean
+data.columns = [str(col).strip() for col in data.columns]
+
+# Select and rename columns - make a clean copy
+processed_data = pd.DataFrame({
+    'Date': data['Date'],
+    'Open': pd.to_numeric(data['Open'], errors='coerce'),
+    'High': pd.to_numeric(data['High'], errors='coerce'),
+    'Low': pd.to_numeric(data['Low'], errors='coerce'),
+    'Close': pd.to_numeric(data['Close'], errors='coerce'),
+    'Volume': pd.to_numeric(data['Volume'], errors='coerce')
+})
+
+# Drop any rows with NaN values
+processed_data = processed_data.dropna()
+
+# Save processed data
 processed_data.to_csv('data/processed/data.csv', index=False)
 
 print(f"Data for {symbol} downloaded and saved successfully!")
