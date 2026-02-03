@@ -62,7 +62,7 @@ def fetch_news(query, from_date, to_date, page_size=100):
     # Create data directory if it doesn't exist
     os.makedirs('data', exist_ok=True)
     
-    filename = f'data/news_{query}.csv'
+    filename = f'data/news.csv'
     df.to_csv(filename, index=False)
     print(f"Saved {len(df)} articles to {filename}")
     
