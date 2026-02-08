@@ -7,9 +7,17 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      '/api': {
+      '/predict': {
         target: 'http://localhost:5000',
-        changeOrigin: true,
+        changeOrigin: true
+      },
+      '/portfolio': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
+      },
+      '/history': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
       }
     }
   }
