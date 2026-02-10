@@ -92,11 +92,11 @@ def run_all_predictions(symbol):
     try:
         lr_model = LinearRegression()
         lr_model.fit(X_train, y_train)
-        lr_pred = lr_model.predict(last_window)[0]
+        lr_pred = float(lr_model.predict(last_window)[0])
         predictions.append({
             'model': 'Linear Regression',
-            'prediction': float(lr_pred),
-            'change': ((lr_pred - current_price) / current_price) * 100
+            'prediction': lr_pred,
+            'change': float(((lr_pred - current_price) / current_price) * 100)
         })
     except Exception as e:
         print(f"Linear Regression error: {e}")
@@ -105,11 +105,11 @@ def run_all_predictions(symbol):
     try:
         rf_model = RandomForestRegressor(n_estimators=100, max_depth=10, random_state=42)
         rf_model.fit(X_train, y_train)
-        rf_pred = rf_model.predict(last_window)[0]
+        rf_pred = float(rf_model.predict(last_window)[0])
         predictions.append({
             'model': 'Random Forest',
-            'prediction': float(rf_pred),
-            'change': ((rf_pred - current_price) / current_price) * 100
+            'prediction': rf_pred,
+            'change': float(((rf_pred - current_price) / current_price) * 100)
         })
     except Exception as e:
         print(f"Random Forest error: {e}")
@@ -118,11 +118,11 @@ def run_all_predictions(symbol):
     try:
         xgb_model = xgb.XGBRegressor(n_estimators=100, max_depth=5, learning_rate=0.1, random_state=42)
         xgb_model.fit(X_train, y_train)
-        xgb_pred = xgb_model.predict(last_window)[0]
+        xgb_pred = float(xgb_model.predict(last_window)[0])
         predictions.append({
             'model': 'XGBoost',
-            'prediction': float(xgb_pred),
-            'change': ((xgb_pred - current_price) / current_price) * 100
+            'prediction': xgb_pred,
+            'change': float(((xgb_pred - current_price) / current_price) * 100)
         })
     except Exception as e:
         print(f"XGBoost error: {e}")
@@ -142,11 +142,11 @@ def run_all_predictions(symbol):
         lstm_model.compile(optimizer='adam', loss='mse')
         lstm_model.fit(X_train_lstm, y_train, epochs=10, batch_size=32, verbose=0)
         
-        lstm_pred = lstm_model.predict(last_window_lstm, verbose=0)[0][0]
+        lstm_pred = float(lstm_model.predict(last_window_lstm, verbose=0)[0][0])
         predictions.append({
             'model': 'LSTM',
-            'prediction': float(lstm_pred),
-            'change': ((lstm_pred - current_price) / current_price) * 100
+            'prediction': lstm_pred,
+            'change': float(((lstm_pred - current_price) / current_price) * 100)
         })
     except Exception as e:
         print(f"LSTM error: {e}")
