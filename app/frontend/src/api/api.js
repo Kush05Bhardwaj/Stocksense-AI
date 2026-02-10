@@ -1,11 +1,14 @@
 import axios from 'axios';
 
-const API_BASE_URL = ''; // Remove /api prefix
+const API_BASE_URL = '/api';
 
 // Predict stock price
-export const predictStockPrice = async (symbol) => {
+export const predictStockPrice = async (symbol, model = 'xgb') => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/predict/${symbol}`);
+        const response = await axios.post(`${API_BASE_URL}/predict`, {
+            symbol: symbol,
+            model: model
+        });
         return response.data;
     } catch (error) {
         console.error('Error predicting stock price:', error);

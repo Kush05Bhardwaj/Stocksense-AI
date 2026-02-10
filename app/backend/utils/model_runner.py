@@ -9,19 +9,35 @@ import numpy as np
 from models.prepare_data import create_features
 from sklearn.ensemble import RandomForestRegressor
 import xgboost as xgb
+import yfinance as yf
+from datetime import datetime, timedelta
 
 def run_prediction(symbol, model_type='xgb'):
     """
     Run prediction for a given stock symbol
     """
-    # Load data
-    df = pd.read_csv('data/processed/data.csv')
-    
-    # Try to load sentiment data
+    # Fetch fresh data for the requested symbol
     try:
-        df = pd.read_csv('data/processed/data_with_sentiment.csv')
-    except:
-        pass
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=365*5)  # 5 years of data
+        
+        stock = yf.Ticker(symbol)
+        df = stock.history(start=start_date, end=end_date)
+        
+        if df.empty:
+            raise ValueError(f"No data found for symbol {symbol}")
+        
+        # Reset index to make Date a column
+        df = df.reset_index()
+        df['Date'] = pd.to_datetime(df['Date'])
+        
+    except Exception as e:
+        # Fallback to cached data if symbol fetch fails
+        print(f"Error fetching {symbol}: {e}. Using cached data.")
+        try:
+            df = pd.read_csv('data/processed/data_with_sentiment.csv')
+        except:
+            df = pd.read_csv('data/processed/data.csv')
     
     # Prepare features
     X, y = create_features(df, window=5)
