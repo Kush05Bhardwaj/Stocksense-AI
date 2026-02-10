@@ -2,10 +2,8 @@
 
 An AI-powered stock price prediction platform that leverages multiple machine learning models to provide comprehensive market analysis and predictions.
 
-![StockSense AI](https://img.shields.io/badge/AI-Stock%20Prediction-blue)
 ![Python](https://img.shields.io/badge/Python-3.10-green)
 ![React](https://img.shields.io/badge/React-18.2-blue)
-![Flask](https://img.shields.io/badge/Flask-Latest-lightgrey)
 
 ## 🌟 Features
 
