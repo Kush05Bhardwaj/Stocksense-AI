@@ -42,12 +42,69 @@ venv.bak/
 .ipynb_checkpoints
 *.ipynb
 
-# Data files
+# Data files (keep structure, ignore data)
 data/*.csv
 data/*.json
 data/*.pkl
 data/*.parquet
+data/raw/*.csv
+data/processed/*.csv
+data/news*.csv
+data/model_comparison.csv
 *.h5
+*.keras
+
+# Model files
+models/*.h5
+models/*.pkl
+models/*.joblib
+models/*.keras
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+
+# Node modules (Frontend)
+node_modules/
+app/frontend/node_modules/
+app/frontend/dist/
+app/frontend/build/
+
+# Package locks (optional - keep package-lock.json for reproducibility)
+# package-lock.json
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# Flask
+instance/
+.webassets-cache
+
+# TensorFlow
+*.ckpt
+*.meta
+checkpoint
+
+# Visualizations (optional - you might want to keep these)
+# data/visualizations/*.png
 *.hdf5
 
 # Model files
