@@ -12,13 +12,13 @@ function App() {
         <button onClick={() => setCurrentPage('dashboard')} style={{ marginRight: '1rem' }}>
           Dashboard
         </button>
-        <button onClick={() => setCurrentPage('portfolio')}>
+        {/* <button onClick={() => setCurrentPage('portfolio')}>
           Portfolio
-        </button>
+        </button> */}
       </nav>
       
       {currentPage === 'dashboard' && <Dashboard />}
-      {currentPage === 'portfolio' && <Portfolio />}
+      {/* {currentPage === 'portfolio' && <Portfolio />} */}
     </div>
   )
 }

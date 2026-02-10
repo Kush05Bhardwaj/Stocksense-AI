@@ -2,16 +2,6 @@
 
 ## 🎓 Open Source Libraries
 
-### Backend Framework & API
-- **Flask** (BSD-3-Clause License)
-  - Web framework for Python
-  - Created by: Pallets Team
-  - URL: https://flask.palletsprojects.com/
-
-- **Flask-CORS** (MIT License)
-  - Cross-Origin Resource Sharing support
-  - URL: https://flask-cors.readthedocs.io/
-
 ### Machine Learning & Data Science
 
 #### Core ML Libraries
@@ -36,31 +26,10 @@
   - URL: https://keras.io/
 
 #### Data Processing
-- **pandas** (BSD-3-Clause License)
-  - Data analysis and manipulation
-  - Created by: Wes McKinney and contributors
-  - URL: https://pandas.pydata.org/
-
-- **NumPy** (BSD License)
-  - Numerical computing library
-  - Created by: Travis Oliphant and contributors
-  - URL: https://numpy.org/
-
 - **yFinance** (Apache License 2.0)
   - Yahoo Finance API wrapper
   - Created by: Ran Aroussi
   - URL: https://github.com/ranaroussi/yfinance
-
-#### Visualization
-- **Matplotlib** (PSF License)
-  - Plotting library
-  - Created by: John D. Hunter and contributors
-  - URL: https://matplotlib.org/
-
-- **Seaborn** (BSD-3-Clause License)
-  - Statistical data visualization
-  - Created by: Michael Waskom
-  - URL: https://seaborn.pydata.org/
 
 ### Natural Language Processing
 - **TextBlob** (MIT License)
