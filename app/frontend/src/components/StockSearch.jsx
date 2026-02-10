@@ -90,7 +90,7 @@ export default function StockSearch() {
                     </div>
 
                     {/* Model Predictions in 2x2 Grid */}
-                    <h4 style={{ color: '#000', marginBottom: '1rem' }}>Model Predictions:</h4>
+                    <h4 style={{ color: '#ffffffff', marginBottom: '1rem' }}>Model Predictions:</h4>
                     <div style={{ 
                         display: 'grid', 
                         gridTemplateColumns: 'repeat(2, 1fr)',
