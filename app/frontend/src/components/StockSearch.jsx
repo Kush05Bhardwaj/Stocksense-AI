@@ -1,7 +1,19 @@
 // Stock search component
 import { useState } from "react";
 import { predictStockPrice } from "../api/api";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
+import { 
+    ComposedChart, 
+    Line, 
+    Bar, 
+    XAxis, 
+    YAxis, 
+    CartesianGrid, 
+    Tooltip, 
+    Legend, 
+    ResponsiveContainer,
+    Area,
+    AreaChart
+} from 'recharts';
 
 export default function StockSearch() {
     const [stockSymbol, setStockSymbol] = useState("");
@@ -77,83 +89,148 @@ export default function StockSearch() {
                         </p>
                     </div>
 
-                    {/* Model Predictions in Cards */}
+                    {/* Model Predictions in 2x2 Grid */}
                     <h4 style={{ color: '#000', marginBottom: '1rem' }}>Model Predictions:</h4>
                     <div style={{ 
                         display: 'grid', 
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                        gap: '1rem'
+                        gridTemplateColumns: 'repeat(2, 1fr)',
+                        gap: '1.5rem',
+                        maxWidth: '1200px'
                     }}>
-                        {prediction.predictions && prediction.predictions.map((pred, index) => (
-                            <div key={index} style={{
-                                padding: '1.5rem',
-                                background: '#fff',
-                                border: '2px solid #ddd',
-                                borderRadius: '8px',
-                                color: '#000'
-                            }}>
-                                <h4 style={{ 
-                                    color: '#000', 
-                                    marginTop: 0,
-                                    marginBottom: '1rem',
-                                    borderBottom: '2px solid #eee',
-                                    paddingBottom: '0.5rem'
+                        {prediction.predictions && prediction.predictions.map((pred, index) => {
+                            // Prepare chart data
+                            const chartData = [
+                                { 
+                                    name: 'Current', 
+                                    price: prediction.current_price,
+                                    type: 'Current'
+                                },
+                                { 
+                                    name: 'Predicted', 
+                                    price: pred.prediction,
+                                    change: pred.change,
+                                    type: 'Predicted'
+                                }
+                            ];
+
+                            return (
+                                <div key={index} style={{
+                                    padding: '1.5rem',
+                                    background: '#fff',
+                                    border: '2px solid #ddd',
+                                    borderRadius: '8px',
+                                    color: '#000',
+                                    minHeight: '350px'
                                 }}>
-                                    {pred.model}
-                                </h4>
-                                
-                                <div style={{ marginBottom: '1rem' }}>
-                                    <p style={{ color: '#666', margin: '0.3rem 0', fontSize: '0.9rem' }}>
-                                        Predicted Price
-                                    </p>
-                                    <p style={{ 
+                                    <h4 style={{ 
                                         color: '#000', 
-                                        fontSize: '1.5rem', 
-                                        fontWeight: 'bold',
-                                        margin: '0.3rem 0'
+                                        marginTop: 0,
+                                        marginBottom: '1rem',
+                                        borderBottom: '2px solid #eee',
+                                        paddingBottom: '0.5rem',
+                                        fontSize: '1.1rem'
                                     }}>
-                                        {prediction.currency}{pred.prediction?.toFixed(2)}
-                                    </p>
-                                </div>
+                                        {pred.model}
+                                    </h4>
+                                    
+                                    <div style={{ marginBottom: '1rem' }}>
+                                        <p style={{ color: '#666', margin: '0.2rem 0', fontSize: '0.85rem' }}>
+                                            Predicted Price
+                                        </p>
+                                        <p style={{ 
+                                            color: '#000', 
+                                            fontSize: '1.4rem', 
+                                            fontWeight: 'bold',
+                                            margin: '0.2rem 0'
+                                        }}>
+                                            {prediction.currency}{pred.prediction?.toFixed(2)}
+                                        </p>
+                                    </div>
 
-                                <div style={{ marginBottom: '1rem' }}>
-                                    <p style={{ color: '#666', margin: '0.3rem 0', fontSize: '0.9rem' }}>
-                                        Expected Change
-                                    </p>
-                                    <p style={{ 
-                                        color: pred.change > 0 ? '#28a745' : '#dc3545',
-                                        fontSize: '1.3rem',
-                                        fontWeight: 'bold',
-                                        margin: '0.3rem 0'
+                                    <div style={{ marginBottom: '1rem' }}>
+                                        <p style={{ color: '#666', margin: '0.2rem 0', fontSize: '0.85rem' }}>
+                                            Expected Change
+                                        </p>
+                                        <p style={{ 
+                                            color: pred.change > 0 ? '#28a745' : '#dc3545',
+                                            fontSize: '1.2rem',
+                                            fontWeight: 'bold',
+                                            margin: '0.2rem 0'
+                                        }}>
+                                            {pred.change > 0 ? '↑' : '↓'} {pred.change > 0 ? '+' : ''}{pred.change?.toFixed(2)}%
+                                        </p>
+                                    </div>
+
+                                    {/* Chart based on index */}
+                                    <div style={{ 
+                                        marginTop: '1rem', 
+                                        paddingTop: '1rem', 
+                                        borderTop: '1px solid #eee' 
                                     }}>
-                                        {pred.change > 0 ? '↑' : '↓'} {pred.change > 0 ? '+' : ''}{pred.change?.toFixed(2)}%
-                                    </p>
+                                        <ResponsiveContainer width="100%" height={150}>
+                                            {index === 0 ? (
+                                                // Bar Chart for Linear Regression
+                                                <ComposedChart data={chartData}>
+                                                    <CartesianGrid strokeDasharray="3 3" />
+                                                    <XAxis dataKey="name" />
+                                                    <YAxis />
+                                                    <Tooltip />
+                                                    <Bar dataKey="price" fill={pred.change > 0 ? '#28a745' : '#dc3545'} />
+                                                </ComposedChart>
+                                            ) : index === 1 ? (
+                                                // Line Chart for Random Forest
+                                                <ComposedChart data={chartData}>
+                                                    <CartesianGrid strokeDasharray="3 3" />
+                                                    <XAxis dataKey="name" />
+                                                    <YAxis />
+                                                    <Tooltip />
+                                                    <Line 
+                                                        type="monotone" 
+                                                        dataKey="price" 
+                                                        stroke={pred.change > 0 ? '#28a745' : '#dc3545'}
+                                                        strokeWidth={3}
+                                                    />
+                                                </ComposedChart>
+                                            ) : index === 2 ? (
+                                                // Area Chart for XGBoost
+                                                <AreaChart data={chartData}>
+                                                    <CartesianGrid strokeDasharray="3 3" />
+                                                    <XAxis dataKey="name" />
+                                                    <YAxis />
+                                                    <Tooltip />
+                                                    <Area 
+                                                        type="monotone" 
+                                                        dataKey="price" 
+                                                        fill={pred.change > 0 ? '#28a745' : '#dc3545'}
+                                                        fillOpacity={0.6}
+                                                        stroke={pred.change > 0 ? '#28a745' : '#dc3545'}
+                                                    />
+                                                </AreaChart>
+                                            ) : (
+                                                // Candlestick-style for LSTM
+                                                <ComposedChart data={chartData}>
+                                                    <CartesianGrid strokeDasharray="3 3" />
+                                                    <XAxis dataKey="name" />
+                                                    <YAxis />
+                                                    <Tooltip />
+                                                    <Bar 
+                                                        dataKey="price" 
+                                                        fill={pred.change > 0 ? '#28a745' : '#dc3545'}
+                                                        barSize={40}
+                                                    />
+                                                    <Line 
+                                                        type="monotone" 
+                                                        dataKey="price" 
+                                                        stroke="#2196F3"
+                                                        strokeWidth={2}
+                                                    />
+                                                </ComposedChart>
+                                            )}
+                                        </ResponsiveContainer>
+                                    </div>
                                 </div>
-
-                                {/* Simple Bar Chart */}
-                                <div style={{ 
-                                    marginTop: '1rem', 
-                                    paddingTop: '1rem', 
-                                    borderTop: '1px solid #eee' 
-                                }}>
-                                    <ResponsiveContainer width="100%" height={120}>
-                                        <BarChart data={[
-                                            { name: 'Current', value: prediction.current_price },
-                                            { name: 'Predicted', value: pred.prediction }
-                                        ]}>
-                                            <CartesianGrid strokeDasharray="3 3" />
-                                            <XAxis dataKey="name" />
-                                            <YAxis />
-                                            <Tooltip />
-                                            <Bar dataKey="value" fill="#4CAF50">
-                                                <Cell fill="#2196F3" />
-                                                <Cell fill={pred.change > 0 ? '#28a745' : '#dc3545'} />
-                                            </Bar>
-                                        </BarChart>
-                                    </ResponsiveContainer>
-                                </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             )}
