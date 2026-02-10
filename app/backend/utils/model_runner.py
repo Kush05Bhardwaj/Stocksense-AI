@@ -12,6 +12,36 @@ import xgboost as xgb
 import yfinance as yf
 from datetime import datetime, timedelta
 
+def get_currency_symbol(symbol):
+    """
+    Detect currency based on stock symbol suffix
+    """
+    currency_map = {
+        '.NS': '₹',      # NSE India (National Stock Exchange)
+        '.BO': '₹',      # BSE India (Bombay Stock Exchange)
+        '.L': '£',       # London Stock Exchange
+        '.TO': 'C$',     # Toronto Stock Exchange
+        '.AX': 'A$',     # Australian Stock Exchange
+        '.HK': 'HK$',    # Hong Kong Stock Exchange
+        '.T': '¥',       # Tokyo Stock Exchange
+        '.KS': '₩',      # Korea Stock Exchange
+        '.SS': '¥',      # Shanghai Stock Exchange
+        '.SZ': '¥',      # Shenzhen Stock Exchange
+        '.SA': 'R$',     # Brazil Stock Exchange
+        '.MC': '€',      # Madrid Stock Exchange
+        '.PA': '€',      # Paris Stock Exchange
+        '.DE': '€',      # Deutsche Börse
+        '.MI': '€',      # Milan Stock Exchange
+    }
+    
+    # Check for suffix
+    for suffix, curr in currency_map.items():
+        if symbol.upper().endswith(suffix):
+            return curr
+    
+    # Default to USD for US stocks and unknown markets
+    return '$'
+
 def run_prediction(symbol, model_type='xgb'):
     """
     Run prediction for a given stock symbol
@@ -58,9 +88,30 @@ def run_prediction(symbol, model_type='xgb'):
     last_window = X[-1].reshape(1, -1)
     prediction = model.predict(last_window)[0]
     
+    # Get currency symbol
+    currency = get_currency_symbol(symbol)
+    
+    # Try to get company info for better details
+    try:
+        stock_info = stock.info
+        company_name = stock_info.get('longName', symbol)
+        currency_from_info = stock_info.get('currency', 'USD')
+        
+        # Map currency codes to symbols
+        currency_symbols = {
+            'USD': '$', 'INR': '₹', 'GBP': '£', 'EUR': '€',
+            'JPY': '¥', 'CNY': '¥', 'HKD': 'HK$', 'CAD': 'C$',
+            'AUD': 'A$', 'KRW': '₩', 'BRL': 'R$'
+        }
+        currency = currency_symbols.get(currency_from_info, currency)
+    except:
+        company_name = symbol
+    
     return {
         'symbol': symbol,
         'prediction': float(prediction),
         'current_price': float(df['Close'].iloc[-1]),
-        'model': model_type
+        'model': model_type,
+        'currency': currency,
+        'company_name': company_name
     }

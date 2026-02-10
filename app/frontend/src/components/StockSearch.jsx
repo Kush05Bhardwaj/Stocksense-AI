@@ -66,9 +66,12 @@ export default function StockSearch() {
                     background: '#f9f9f9'
                 }}>
                     <h3>Prediction Results</h3>
+                    {prediction.company_name && prediction.company_name !== prediction.symbol && (
+                        <p><strong>Company:</strong> {prediction.company_name}</p>
+                    )}
                     <p><strong>Symbol:</strong> {prediction.symbol}</p>
-                    <p><strong>Current Price:</strong> ${prediction.current_price?.toFixed(2) || 'N/A'}</p>
-                    <p><strong>Predicted Price:</strong> ${prediction.prediction?.toFixed(2) || 'N/A'}</p>
+                    <p><strong>Current Price:</strong> {prediction.currency || '$'}{prediction.current_price?.toFixed(2) || 'N/A'}</p>
+                    <p><strong>Predicted Price:</strong> {prediction.currency || '$'}{prediction.prediction?.toFixed(2) || 'N/A'}</p>
                     <p><strong>Model Used:</strong> {prediction.model || 'N/A'}</p>
                     {prediction.change && (
                         <p style={{ color: prediction.change > 0 ? 'green' : 'red' }}>
