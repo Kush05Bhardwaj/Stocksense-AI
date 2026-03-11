@@ -367,6 +367,4 @@ For support, questions, or feedback:
 
 ---
 
-**Made with ❤️ and AI**
-
 *If you find this project helpful, please give it a ⭐ on GitHub!*
