@@ -9,6 +9,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from routes.predict import predict_bp
 from routes.sentiment import sentiment_bp
 from routes.portfolio import portfolio_bp
+from routes.report import report_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -17,7 +18,7 @@ CORS(app)
 app.register_blueprint(predict_bp, url_prefix='/api')
 app.register_blueprint(sentiment_bp, url_prefix='/api')
 app.register_blueprint(portfolio_bp, url_prefix='/api')
-
+app.register_blueprint(report_bp, url_prefix='/api')
 @app.route('/')
 def home():
     return {'message': 'StockSense AI API', 'status': 'running'}
