@@ -51,3 +51,9 @@ export const getStockHistory = async (symbol) => {
         throw error;
     }
 };
+
+// Investment report
+export const getInvestmentReport = (symbol) => axios.get(`/api/report/${symbol}`);
+
+// Download report
+export const downloadReportPDF = (symbol) => axios.get(`/api/report/${symbol}/pdf`, { responseType: 'blob' })
