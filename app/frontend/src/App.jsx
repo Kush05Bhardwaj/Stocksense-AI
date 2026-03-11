@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Dashboard from './pages/Dashboard'
 import Portfolio from './pages/Portfolio'
+import InvestmentReport from './pages/InvestmentReport'
 import './App.css'
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
       </nav>
       
       {currentPage === 'dashboard' && <Dashboard />}
-      {currentPage === 'report' && <Report />}
+      {currentPage === 'report' && <InvestmentReport />}
       {/* {currentPage === 'portfolio' && <Portfolio />} */}
     </div>
   )

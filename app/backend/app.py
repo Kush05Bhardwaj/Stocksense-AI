@@ -19,6 +19,7 @@ app.register_blueprint(predict_bp, url_prefix='/api')
 app.register_blueprint(sentiment_bp, url_prefix='/api')
 app.register_blueprint(portfolio_bp, url_prefix='/api')
 app.register_blueprint(report_bp, url_prefix='/api')
+
 @app.route('/')
 def home():
     return {'message': 'StockSense AI API', 'status': 'running'}
